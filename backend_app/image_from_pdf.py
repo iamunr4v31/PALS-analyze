@@ -1,4 +1,5 @@
 import fitz
+from os.path import isfile
 import io
 from PIL import Image
 from datetime import datetime
@@ -25,11 +26,26 @@ class ImgExtractor:
                 xref = img[0]
                 base_image = pdf_file.extractImage(xref)
                 image_bytes = base_image["image"]
-                image_ext = base_image["ext"]
+                image_ext = "jpeg"
                 image = Image.open(io.BytesIO(image_bytes))
                 ocr = OCRImgToText(image)
-                text = ocr.img_to_str()
+                text = ocr.img_to_str().strip()
+                text = " ".join(text.split("\n"))
                 ## OCR utils
-                image.save(open(f"./images/filename,{datetime.now()},{image_index},{text}.{image_ext}", "wb"))
+                dt = datetime.now().strftime("%d%m%Y")
+                filenm = filename = f"images/filename,{dt},{image_index},{text}"
+                while True:
+                    print(filename, isfile(filename))
+                    if isfile(filename):
+                        print(filename)
+                        iter = 1
+                        filename = f"{filenm}_{iter}"
+                        iter+=1
+                    else:
+                        image.save(open(f"{filename}.{image_ext}", "wb"))
+                        print("img saved")
+                        break
+                # image.save(open(f"images/filename,{dt},{image_index},{text}.{image_ext}", "wb"))
+
 
 

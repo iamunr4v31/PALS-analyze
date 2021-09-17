@@ -12,7 +12,8 @@ class OCRImgToText:
     tesseract_path: str = os.environ.get("tesseract_path")
 
     def __init__(self, image):
-        self.path = image
+        self.image = image
+        pytesseract.pytesseract.tesseract_cmd = self.tesseract_path
     
     def img_to_str(self, **kwargs):
         return pytesseract.image_to_string(self.image, **kwargs)
