@@ -8,13 +8,13 @@ from PIL import Image
 load_dotenv()
 
 class OCRImgToText:
-    path: str
+    image: Image
     tesseract_path: str = os.environ.get("tesseract_path")
 
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, image):
+        self.path = image
     
-    def img_to_pdf(self, **kwargs):
-        return pytesseract.image_to_string(Image.open(self.path), **kwargs)
+    def img_to_str(self, **kwargs):
+        return pytesseract.image_to_string(self.image, **kwargs)
     
     list_languages = lambda config: pytesseract.get_languages(config=config)
