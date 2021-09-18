@@ -30,6 +30,10 @@ class ImgExtractor:
             for image_index, img in enumerate(image_list, start=1):
                 print(img)
                 xref = img[0]
+                pix = fitz.Pixmap(pdf_file, xref)
+                print(pix)
+                print(pix.irect)
+                print(pix.x, pix.y, pix.height, pix.width)
                 base_image = pdf_file.extractImage(xref)
                 image_bytes = base_image["image"]
                 image_ext = "jpeg"
